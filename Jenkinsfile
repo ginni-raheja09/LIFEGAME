@@ -5,7 +5,6 @@ pipeline {
         stage('Checkout') {  
             agent {  
                 kubernetes {  
-                    // Define the Pod template directly here using YAML  
                     yaml """  
                     apiVersion: v1  
                     kind: Pod  
@@ -24,8 +23,7 @@ pipeline {
                         persistentVolumeClaim:  
                           claimName: maven-repo-pvc  
                     """  
-                    // Optionally, specify a label to identify the pod template  
-                    label 'maven-pod'  
+                    defaultContainer 'maven'  
                 }  
             }  
             steps {  
