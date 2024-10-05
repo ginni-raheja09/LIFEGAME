@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {  
             agent {  
                 kubernetes {  
-                    cloud 'kubernetes' // Name of the Kubernetes cloud configuration  
+                    cloud 'aks' // Name of the Kubernetes cloud configuration  
                     label 'jenkins-maven-agent' // Label to match the AKS node labels  
                     defaultContainer 'maven'  
                     yaml """  
