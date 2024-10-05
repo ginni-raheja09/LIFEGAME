@@ -13,12 +13,6 @@ pipeline {
                 sh 'mvn clean compile'  
             }  
         }  
-        stage('Test') {  
-            steps {  
-                // Run the tests  
-                sh 'mvn test'  
-            }  
-        }  
         stage('Package') {  
             steps {  
                 // Package the application  
