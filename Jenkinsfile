@@ -1,16 +1,19 @@
 pipeline {  
     agent none // No global agent; specify agents at the stage level  
-    environment {  
-        KUBERNETES_SKIP_TLS_VERIFY = 'true'
-        KUBECONFIG = credentials('config') // Reference the kubeconfig credential ID  
-    }  
+      
     stages {  
-        stage('Checkout') {  
+        stage('Build') {  
             agent {  
                 kubernetes {  
+                    cloud 'aks'  
+                    // label 'jenkins-maven-agent'  
+                    // defaultContainer 'maven'  
                     yaml """  
                     apiVersion: v1  
                     kind: Pod  
+                    metadata:  
+                      labels:  
+                        app: jenkins-maven  
                     spec:  
                       containers:  
                       - name: maven  
@@ -26,24 +29,23 @@ pipeline {
                         persistentVolumeClaim:  
                           claimName: maven-repo-pvc  
                     """  
-                    defaultContainer 'maven'  
                 }  
             }  
             steps {  
-                // Checkout the source code from the repository  
-                checkout scm  
-                // Stash the checked out source code to reuse in other stages if needed  
-                stash name: 'source', includes: '**/*'  
+                // Build your Maven project  
+                container('maven') {  
+                    sh 'mvn clean package'  
+                }  
             }  
         }  
     }  
   
     post {  
         success {  
-            echo 'Checkout completed successfully!'  
+            echo 'Build completed successfully!'  
         }  
         failure {  
-            echo 'Checkout stage failed.'  
+            echo 'Build failed.'  
         }  
     }  
 }  
