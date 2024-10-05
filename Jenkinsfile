@@ -5,15 +5,15 @@ pipeline {
         stage('Build') {  
             agent {  
                 kubernetes {  
-                    cloud 'aks'  
-                    // label 'jenkins-maven-agent'  
-                    // defaultContainer 'maven'  
+                    cloud 'kubernetes' // Name of the Kubernetes cloud configuration  
+                    label 'jenkins-maven-agent' // Label to match the AKS node labels  
+                    defaultContainer 'maven'  
                     yaml """  
                     apiVersion: v1  
                     kind: Pod  
                     metadata:  
                       labels:  
-                        app: jenkins-maven  
+                        jenkins-agent: maven  
                     spec:  
                       containers:  
                       - name: maven  
@@ -28,6 +28,8 @@ pipeline {
                       - name: maven-repo  
                         persistentVolumeClaim:  
                           claimName: maven-repo-pvc  
+                      nodeSelector:  
+                        kubernetes.io/hostname: <your-aks-node-label>  
                     """  
                 }  
             }  
