@@ -1,6 +1,8 @@
 pipeline {  
     agent none // No global agent; specify agents at the stage level  
-  
+    environment {  
+        KUBECONFIG = credentials('aksconfig') // Reference the kubeconfig credential ID  
+    }  
     stages {  
         stage('Checkout') {  
             agent {  
