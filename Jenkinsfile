@@ -1,12 +1,5 @@
 pipeline {  
-    agent any  
-  
-    environment {  
-        MAVEN_HOME = tool 'Maven' // Name of the Maven tool configured in Jenkins  
-        JAVA_HOME = tool 'JDK' // Name of the JDK tool configured in Jenkins  
-        PATH = "${env.MAVEN_HOME}/bin:${env.JAVA_HOME}/bin:${env.PATH}"  
-    }  
-  
+    agent any 
     stages {  
         stage('Checkout') {  
             steps {  
