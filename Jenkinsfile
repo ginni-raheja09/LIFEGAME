@@ -1,6 +1,7 @@
 pipeline {  
     agent none // No global agent; specify agents at the stage level  
     environment {  
+        KUBERNETES_SKIP_TLS_VERIFY = 'true'
         KUBECONFIG = credentials('aksconfig') // Reference the kubeconfig credential ID  
     }  
     stages {  
