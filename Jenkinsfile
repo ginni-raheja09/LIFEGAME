@@ -31,8 +31,18 @@ pipeline {
             steps {  
                 // Checkout the source code from the repository  
                 checkout scm  
-                // Stash the checked out source code to reuse in other stages  
+                // Stash the checked out source code to reuse in other stages if needed  
                 stash name: 'source', includes: '**/*'  
             }  
         }  
+    }  
+  
+    post {  
+        success {  
+            echo 'Checkout completed successfully!'  
+        }  
+        failure {  
+            echo 'Checkout stage failed.'  
+        }  
+    }  
 }  
